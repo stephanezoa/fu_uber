@@ -28,8 +28,8 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
-  AnimationController loadingController;
-  Animation<double> animation;
+  late AnimationController loadingController;
+  late Animation<double> animation;
 
   @override
   void initState() {
@@ -60,7 +60,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
 
     return Material(
       child: Scaffold(
-          resizeToAvoidBottomPadding: true,
+          resizeToAvoidBottomInset: true,
           body: Stack(
             children: <Widget>[
               SlidingUpPanel(
@@ -90,7 +90,7 @@ class _MainScreenState extends State<MainScreen> with TickerProviderStateMixin {
                 borderRadius: ShapeUtils.borderRadiusGeometry,
                 body: GoogleMap(
                   initialCameraPosition: CameraPosition(
-                      target: mapModel.currentPosition,
+                      target: mapModel.currentPosition ?? const LatLng(28.612912, 77.227321),
                       zoom: mapModel.currentZoom),
                   onMapCreated: mapModel.onMapCreated,
                   mapType: MapType.normal,

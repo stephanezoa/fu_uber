@@ -6,7 +6,7 @@ import 'package:fu_uber/Core/Utils/BasicShapeUtils.dart';
 class CarSelectionCard extends StatelessWidget {
   final CarTypeMenu carTypeMenu;
 
-  const CarSelectionCard({Key key, this.carTypeMenu})
+  const CarSelectionCard({Key? key, required this.carTypeMenu})
       : super(key: key);
   @override
   Widget build(BuildContext context) {

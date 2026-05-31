@@ -40,7 +40,7 @@ class _OnGoingRideScreenState extends State<OnGoingRideScreen> {
             borderRadius: ShapeUtils.borderRadiusGeometry,
             body: GoogleMap(
               initialCameraPosition: CameraPosition(
-                  target: rideBookedProvider.originLatLng, zoom: 16),
+                  target: rideBookedProvider.originLatLng ?? const LatLng(28.612912, 77.227321), zoom: 16),
               onMapCreated: rideBookedProvider.onMapCreated,
               mapType: MapType.normal,
               rotateGesturesEnabled: false,

@@ -5,14 +5,14 @@ import 'package:fu_uber/Core/Models/UserPlaces.dart';
 import 'package:fu_uber/Core/Repository/Repository.dart';
 
 class UserDetailsModel extends ChangeNotifier {
-  String uuid;
-  String photoUrl;
-  String name;
-  String email;
-  String phone;
-  String ongoingRide;
-  List<String> previousRides;
-  List<UserPlaces> favouritePlaces;
+  late String uuid;
+  late String photoUrl;
+  late String name;
+  late String email;
+  late String phone;
+  late String? ongoingRide;
+  late List<String> previousRides;
+  late List<UserPlaces> favouritePlaces;
 
   UserDetailsModel() {
     UserDetails userDetails = DemoData.currentUserDetails;

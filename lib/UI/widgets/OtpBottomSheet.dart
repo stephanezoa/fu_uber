@@ -33,22 +33,22 @@ class OtpBottomSheet extends StatelessWidget {
             maxLength: 4,
             hasError: verificationModel.ifOtpHasError,
             maskCharacter: "*",
-            pinCodeTextFieldLayoutType:
-            PinCodeTextFieldLayoutType.AUTO_ADJUST_WIDTH,
             wrapAlignment: WrapAlignment.start,
             pinBoxDecoration:
             ProvidedPinBoxDecoration.underlinedPinBoxDecoration,
-            pinTextStyle: TextStyle(fontSize: 30.0),
+            pinTextStyle: const TextStyle(fontSize: 30.0),
             pinTextAnimatedSwitcherTransition:
             ProvidedPinBoxTextAnimation.scalingTransition,
-            pinTextAnimatedSwitcherDuration: Duration(milliseconds: 200),
+            pinTextAnimatedSwitcherDuration: const Duration(milliseconds: 200),
           ),
         ),
         Padding(
           padding: const EdgeInsets.all(15),
-          child: RaisedButton(
-            disabledColor: Colors.black87,
-            color: Colors.black87,
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: Colors.black87,
+              disabledBackgroundColor: Colors.black87,
+            ),
             onPressed: () {
               verificationModel
                   .setOtp(verificationModel.oTPTextController.text);

@@ -1,17 +1,16 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fu_uber/Core/Constants/colorConstants.dart';
 
 typedef OnPressed = void Function();
 
 class CircularFlatButton extends StatelessWidget {
-  final double size;
+  final double? size;
   final Widget child;
   final String name;
-  final OnPressed onPressed;
+  final OnPressed? onPressed;
 
   const CircularFlatButton(
-      {Key key, this.size, this.name, this.onPressed, this.child})
+      {Key? key, this.size, required this.name, this.onPressed, required this.child})
       : super(key: key);
 
   @override
@@ -19,9 +18,12 @@ class CircularFlatButton extends StatelessWidget {
     return SizedBox(
         height: size,
         width: size,
-        child: FlatButton(
-            shape: CircleBorder(),
-            disabledColor: ConstantColors.DeepBlue.withOpacity(0.2),
+        child: TextButton(
+            style: TextButton.styleFrom(
+              shape: const CircleBorder(),
+              disabledBackgroundColor: ConstantColors.DeepBlue.withOpacity(0.2),
+              padding: EdgeInsets.zero,
+            ),
             onPressed: onPressed,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -31,7 +33,7 @@ class CircularFlatButton extends StatelessWidget {
                 child,
                 Text(
                   name,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 18,
                     color: Colors.deepPurpleAccent,
                   ),

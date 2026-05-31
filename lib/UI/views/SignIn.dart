@@ -58,10 +58,11 @@ class _SignInPageState extends State<SignInPage> {
                     cursorWidth: 2,
                     onFieldSubmitted: verificationModel.setPhoneNumber,
                     validator: (value) {
-                      if (value.length < 10 || value.length > 13) {
+                      if (value == null || value.length < 10 || value.length > 13) {
                         return "Enter a Valid Phone Number";
-                      } else
+                      } else {
                         return null;
+                      }
                     },
                     keyboardType: TextInputType.phone,
                     style: TextStyle(
@@ -90,23 +91,24 @@ class _SignInPageState extends State<SignInPage> {
             ),
             InkResponse(
               onTap: () {
-                if (_phoneFormKey.currentState.validate())
+                if (_phoneFormKey.currentState?.validate() ?? false) {
                   verificationModel.updateCircularLoading(true);
-                Future.delayed(Duration(seconds: 5)).then((_) {
+                }
+                Future.delayed(const Duration(seconds: 5)).then((_) {
                   verificationModel.handlePhoneVerification().then((response) {
                     ProjectLog.logIt(
                         SignInPage.TAG, "PhoneVerification Response", response);
                     verificationModel.updateCircularLoading(false);
                     if (response == 1) {
                       showModalBottomSheet(
-                        shape: RoundedRectangleBorder(
+                        shape: const RoundedRectangleBorder(
                           borderRadius: BorderRadius.all(Radius.circular(10.0)),
                         ),
                         context: context,
                         builder: (context) => OtpBottomSheet(),
                       );
                     } else {
-                      _scaffoldKey.currentState.showSnackBar(SnackBar(
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                           content: Text("Something Went Wrong.. Retry!")));
                     }
                   });

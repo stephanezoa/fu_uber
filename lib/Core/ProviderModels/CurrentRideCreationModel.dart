@@ -2,12 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fu_uber/Core/Enums/Enums.dart';
 
 class CurrentRideCreationModel extends ChangeNotifier {
-  RideType selectedRideType;
+  RideType selectedRideType = RideType.Classic;
   bool riderFound = false;
-
-  CurrentRideCreationModel() {
-    selectedRideType = RideType.Classic;
-  }
 
   String getEstimationFromOriginDestination() {
     return "200";

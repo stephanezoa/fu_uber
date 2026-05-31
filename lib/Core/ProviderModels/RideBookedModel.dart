@@ -15,14 +15,14 @@ class RideBookedModel extends ChangeNotifier {
   /// Tag for Logs
   static const TAG = "MapModel";
 
-  GoogleMapController _mapController;
+  GoogleMapController? _mapController;
   MapRepository mapRepository = MapRepository();
 
   /// Origin Latitude and Longitude
-  LatLng originLatLng;
+  LatLng? originLatLng;
 
   /// Destination Latitude and Longitude
-  LatLng destinationLatLng;
+  LatLng? destinationLatLng;
 
   /// Default Camera Zoom
   double currentZoom = 19;
@@ -34,16 +34,16 @@ class RideBookedModel extends ChangeNotifier {
   LatLng driverLatLng = DemoData.nearbyDrivers[1].currentLocation;
 
   /// Set of all the markers on the map
-  final Set<Marker> _markers = Set();
+  final Set<Marker> _markers = <Marker>{};
 
   /// Set of all the polyLines/routes on the map
-  final Set<Polyline> _polyLines = Set();
+  final Set<Polyline> _polyLines = <Polyline>{};
 
   /// Markers Getter
-  get markers => _markers;
+  Set<Marker> get markers => _markers;
 
   /// PolyLines Getter.
-  get polyLines => _polyLines;
+  Set<Polyline> get polyLines => _polyLines;
 
   String rideStatusAsText = "Driver enRoute";
 
@@ -54,7 +54,7 @@ class RideBookedModel extends ChangeNotifier {
     ProjectLog.logIt(TAG, "onMapCreated", "null");
     _mapController = controller;
     rootBundle.loadString('assets/mapStyle.txt').then((string) {
-      _mapController.setMapStyle(string);
+      _mapController?.setMapStyle(string);
     });
     listenToRideLocationUpdate();
     addAllMarkers();
@@ -67,8 +67,11 @@ class RideBookedModel extends ChangeNotifier {
   onCameraMove(CameraPosition position) {}
 
   void createOriginDestinationRoute() async {
+    final origin = originLatLng;
+    final dest = destinationLatLng;
+    if (origin == null || dest == null) return;
     await mapRepository
-        .getRouteCoordinates(originLatLng, destinationLatLng)
+        .getRouteCoordinates(origin, dest)
         .then((route) {
       createCurrentRoute(route, Constants.currentRoutePolylineId,
           ConstantColors.PrimaryColor, 3);
@@ -77,8 +80,10 @@ class RideBookedModel extends ChangeNotifier {
   }
 
   void createOriginDriverLocationRoute() async {
+    final origin = originLatLng;
+    if (origin == null) return;
     await mapRepository
-        .getRouteCoordinates(originLatLng, driverLatLng)
+        .getRouteCoordinates(origin, driverLatLng)
         .then((route) {
       createCurrentRoute(route, Constants.driverOriginPolyId, Colors.green, 5);
       notifyListeners();
@@ -99,16 +104,19 @@ class RideBookedModel extends ChangeNotifier {
   }
 
   void addAllMarkers() async {
+    final origin = originLatLng;
+    final dest = destinationLatLng;
+    if (origin == null || dest == null) return;
     _markers.add(Marker(
         markerId: MarkerId(Constants.pickupMarkerId),
-        position: originLatLng,
+        position: origin,
         flat: true,
         icon: BitmapDescriptor.fromBytes(
           await Utils.getBytesFromAsset("images/pickupIcon.png", 70),
         )));
     _markers.add(Marker(
         markerId: MarkerId(Constants.destinationMarkerId),
-        position: destinationLatLng,
+        position: dest,
         flat: true,
         icon: BitmapDescriptor.fromBytes(
           await Utils.getBytesFromAsset("images/destinationIcon.png", 70),
@@ -128,7 +136,7 @@ class RideBookedModel extends ChangeNotifier {
   void listenToRideLocationUpdate() {
     /// We will be listening to drivers location update and update here accordingly,
     /// like we did in the users current location update.
-    Future.delayed(Duration(seconds: 20), () {
+    Future.delayed(const Duration(seconds: 20), () {
       driverStatus = DriverStatus.Reached;
       notifyListeners();
     });
